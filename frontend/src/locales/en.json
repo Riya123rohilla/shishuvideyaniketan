@@ -1,0 +1,405 @@
+{
+  "navbar": {
+    "home": "Home",
+    "about": "About",
+    "gallery": "Gallery",
+    "courses": "Courses",
+    "events": "Events",
+    "facilities": "Facilities & Faculty",
+    "contact": "Contact Us",
+    "schoolName": "Shishu Vidya Nikethan"
+  },
+  "hero": {
+    "title": "Shaping Young Minds for a Bright Future",
+    "subtitle": "Welcome to Shishu Vidya Nikethan, where education meets innovation. We nurture creativity, discipline, and excellence in every child.",
+    "cta": "Explore Our Courses",
+    "admissions": "Admissions Open",
+    "knowMore": "Know More"
+  },
+  "about": {
+    "title": "About Us",
+    "aboutSchool": "About Our School",
+    "aboutDescription": "Our school is a place where learning goes beyond textbooks. We are committed to providing quality education that helps students grow academically, socially, and morally. With experienced teachers and modern facilities, we focus on shaping confident and responsible individuals.",
+    "whoWeAre": "Who We Are",
+    "whoWeAreText": "Our school was founded more than 25 years ago with the aim of providing quality education in a disciplined and supportive environment. Over the years, it has grown with the trust of parents and the dedication of our teachers, creating a place where students feel safe, valued, and encouraged to learn. We believe that true education goes beyond academics. By blending strong moral values with modern teaching practices, we focus on the overall development of each child, helping them grow academically, socially, and emotionally at their own pace.",
+    "mission": "Our Mission",
+    "missionText": "Our mission is to provide quality education in a safe and encouraging environment where students develop strong academic skills, good values, and confidence to succeed in life.",
+    "vision": "Our Vision",
+    "visionText": "Our vision is to create a learning community that inspires students to become responsible, skilled, and compassionate individuals who are prepared for future challenges.",
+    "description": "Shishu Vidya Nikethan is dedicated to providing a safe, nurturing, and stimulating learning environment where children can grow and thrive."
+  },
+  "whyChooseSchool": {
+    "title": "Why Choose Our School",
+    "subtitle": "We are committed to providing quality education in a supportive and inspiring environment.",
+    "experiencedFaculty": "Experienced Faculty",
+    "experiencedFacultyDesc": "Our teachers are highly qualified and experienced, focusing on strong academic foundations and personal growth.",
+    "safeEnvironment": "Safe & Friendly Environment",
+    "safeEnvironmentDesc": "We provide a secure, disciplined, and welcoming environment where students feel safe and confident.",
+    "modernClassrooms": "Modern Classrooms",
+    "modernClassroomsDesc": "Smart classrooms with modern teaching tools make learning interactive and engaging for students.",
+    "balance": "Academic & Extracurricular Balance",
+    "balanceDesc": "We ensure equal importance to academics, sports, arts, and extracurricular activities.",
+    "studentCentered": "Student-Centered Learning",
+    "studentCenteredDesc": "Our teaching approach focuses on individual student needs and encourages active participation.",
+    "parentTeacher": "Strong Parent–Teacher Partnership",
+    "parentTeacherDesc": "We maintain regular communication between parents and teachers to support student progress and overall development."
+  },
+  "learningApproach": {
+    "title": "Modern Learning Approach at Our School",
+    "subtitle": "Our school follows a modern and student-focused learning approach. We help students learn better by supporting classroom teaching with structured notes, key learning points, and practice questions based on educational content.",
+    "easyNotes": "Easy Study Notes",
+    "easyNotesDesc": "Long lessons are converted into short, clear, and easy-to-understand notes for students. Making complex topics simple and digestible for better learning.",
+    "importantPoints": "Important Learning Points",
+    "importantPointsDesc": "Key concepts and exam-relevant topics are highlighted to help students focus on what matters most. Ensuring efficient study time and better exam preparation.",
+    "practiceQuestions": "Practice Questions",
+    "practiceQuestionsDesc": "Students get topic-based practice questions to revise and test their understanding. Building confidence through regular practice and self-assessment."
+  },
+  "learningSupportFeatures": {
+    "title": "Learning Support Features",
+    "subtitle": "Our comprehensive learning materials complement classroom teaching and help students excel in their studies",
+    "easyNotes": "Easy Study Notes",
+    "easyNotesDesc": "Clear, organized notes that make complex topics simple and easy to understand",
+    "importantPoints": "Important Learning Points",
+    "importantPointsDesc": "Key concepts highlighted to help students focus on what matters most for exams",
+    "practiceQuestions": "Practice Questions",
+    "practiceQuestionsDesc": "Regular practice sets to test understanding and build confidence for assessments"
+  },
+  "whyLearningApproach": {
+    "title": "Why This Learning Approach?",
+    "subtitle": "Our modern learning methodology is designed to maximize student success",
+    "savesTime": "Saves Time",
+    "savesTimeDesc": "Pre-organized notes and highlighted key points help students study efficiently",
+    "betterUnderstanding": "Better Understanding",
+    "betterUnderstandingDesc": "Clear explanations and structured content make difficult topics easy to grasp",
+    "examOriented": "Exam-Oriented Study",
+    "examOrientedDesc": "Focused on important topics and practice questions aligned with exam patterns",
+    "learnAnytime": "Learn Anytime",
+    "learnAnytimeDesc": "Access study materials and practice anytime, anywhere for flexible learning",
+    "experience": "Experience the difference in your child's learning journey"
+  },
+  "howItWorks": {
+    "title": "How Learning Support Works",
+    "subtitle": "A simple 4-step process that enhances classroom learning and improves student outcomes",
+    "step1Title": "Lessons Explained in Class",
+    "step1Desc": "Teachers deliver engaging lessons using modern teaching methods and interactive techniques",
+    "step2Title": "Structured Study Material Prepared",
+    "step2Desc": "Teachers create comprehensive notes with key points highlighted for easy revision",
+    "step3Title": "Important Points and Questions Shared",
+    "step3Desc": "Students receive curated learning materials with practice questions for better understanding",
+    "step4Title": "Students Revise and Practice",
+    "step4Desc": "Students use materials to revise concepts and practice questions to reinforce learning"
+  },
+  "whyChooseUs": {
+    "title": "Why Choose Shishu Vidya Nikethan?",
+    "subtitle": "Discover what makes us the preferred choice for quality education",
+    "structuredLearning": "Structured Learning",
+    "structuredLearningDesc": "Comprehensive notes and organized content for better understanding and retention",
+    "practiceOriented": "Practice-Oriented",
+    "practiceOrientedDesc": "Regular practice questions and assessments to reinforce learning",
+    "progressTracking": "Progress Tracking",
+    "progressTrackingDesc": "Continuous monitoring and personalized feedback for every student",
+    "experiencedFaculty": "Experienced Faculty",
+    "experiencedFacultyDesc": "Dedicated and qualified teachers committed to student success"
+  },
+  "learningImpact": {
+    "title": "Student Learning Impact",
+    "subtitle": "Real results that make a difference in our students' academic journey",
+    "learningResources": "Learning Resources",
+    "studentsSupported": "Students Supported",
+    "studentSatisfaction": "Student Satisfaction",
+    "improvedPerformance": "Improved Academic Performance"
+  },
+  "testimonials": {
+    "title": "What Our Community Says",
+    "subtitle": "Hear from our students and teachers about their learning experience"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Find answers to common questions about our school",
+    "q1": "What makes Shishu Vidya Nikethan different?",
+    "a1": "We focus on Modern Learning Approach with structured notes, engaging practice questions, and consistent progress tracking to ensure every student succeeds.",
+    "q2": "What subjects and grades do you cover?",
+    "a2": "We offer comprehensive education from Nursery to Class 10, covering all core subjects including Mathematics, Science, English, Hindi, Social Studies, and Computer Science.",
+    "q3": "How do you track student progress?",
+    "a3": "We use regular assessments, personalized feedback, and parent-teacher meetings to ensure continuous monitoring and improvement of each student's academic journey.",
+    "q4": "What are the admission requirements?",
+    "a4": "Admission requirements vary by grade level. Please contact our admissions office for specific details about age requirements, documents needed, and the admission process.",
+    "q5": "Do you provide transportation facilities?",
+    "a5": "Yes, we provide safe and reliable transportation covering major areas of the city. Contact us for route details and availability."
+  },
+  "callToAction": {
+    "title": "Ready to Join Our Learning Community?",
+    "subtitle": "Enroll your child today and give them the gift of quality education",
+    "startJourney": "Start Your Journey",
+    "callNow": "Call Now",
+    "limitedSeats": "Limited seats available - Admissions open!"
+  },
+  "courses": {
+    "title": "Our Courses",
+    "subtitle": "Explore our carefully designed curriculum",
+    "preschool": "Preschool",
+    "primary": "Primary",
+    "secondary": "Secondary",
+    "filter": "Filter",
+    "noResults": "No courses found matching your criteria"
+  },
+  "facilities": {
+    "title": "Facilities & Faculty",
+    "subtitle": "State-of-the-art infrastructure and experienced educators",
+    "libraries": "Libraries",
+    "laboratories": "Laboratories",
+    "sports": "Sports Facilities",
+    "art": "Art & Music Rooms",
+    "faculty": "Our Faculty",
+    "experienced": "Experienced educators dedicated to student success"
+  },
+  "gallery": {
+    "title": "Gallery",
+    "subtitle": "Capture moments from our campus",
+    "events": "Events",
+    "campus": "Campus Life",
+    "activities": "Student Activities"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Get in touch with us",
+    "getInTouch": "Get In Touch",
+    "findUs": "Find Us",
+    "ourLocation": "Our Location",
+    "visitCampus": "Visit our campus and experience the learning environment firsthand.",
+    "getDirections": "Get Directions",
+    "phone": "Phone",
+    "email": "Email",
+    "address": "Address",
+    "form": "Contact Form",
+    "name": "Your Name",
+    "message": "Your Message",
+    "send": "Send Message",
+    "success": "Message sent successfully!",
+    "error": "Error sending message",
+    "quickInfo": "Quick Info",
+    "howToReach": "How to Reach Us",
+    "reachChannels": "Get in touch with us through any of these channels",
+    "visitOurCampus": "Visit Our Campus",
+    "callUs": "Call Us",
+    "mainOffice": "Main Office",
+    "admissions": "Admissions",
+    "emailUs": "Email Us",
+    "general": "General",
+    "officeHours": "Office Hours",
+    "monFri": "Mon - Fri",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "closed": "Closed",
+    "sendMessage": "Send Message",
+    "writeToUs": "Write to Us",
+    "fillForm": "Fill out the form and we'll get back to you soon.",
+    "fullName": "Full Name",
+    "emailAddress": "Email Address",
+    "phoneNumber": "Phone Number",
+    "subject": "Subject",
+    "yourMessage": "Your Message",
+    "enterName": "Enter your name",
+    "enterEmail": "Enter your email",
+    "enterPhone": "Enter your phone",
+    "selectSubject": "Select a subject",
+    "admissionInquiry": "Admission Inquiry",
+    "generalInquiry": "General Inquiry",
+    "feedback": "Feedback",
+    "complaint": "Complaint",
+    "other": "Other",
+    "writeMessage": "Write your message here...",
+    "admissionQuestions": "Have Questions About Admissions?",
+    "admissionHelp": "Our admissions team is here to help you every step of the way.",
+    "callNow": "Call Now",
+    "thankYou": "Thank you for your message! We will get back to you soon."
+  },
+  "coursesPage": {
+    "heroBadge": "📚 Discover Learning",
+    "heroTitle": "Explore Our Courses",
+    "heroSubtitle": "Find the perfect program for your child's educational journey. From pre-primary to senior secondary, we offer comprehensive learning experiences.",
+    "searchPlaceholder": "Search courses, subjects or codes...",
+    "selectClass": "Select Your Class",
+    "clickToView": "Click on a class to view available courses",
+    "allClasses": "All Classes",
+    "showing": "Showing",
+    "course": "course",
+    "courses": "courses",
+    "for": "for",
+    "clearFilter": "Clear Filter",
+    "noCourses": "No courses found for",
+    "tryDifferent": "Try selecting a different class or view all courses.",
+    "viewAllCourses": "View All Courses",
+    "popular": "Popular",
+    "viewDetails": "View Details",
+    "enrollNow": "Enroll Now",
+    "annualFee": "Annual Fee"
+  },
+  "footer": {
+    "about": "About",
+    "quick_links": "Quick Links",
+    "contact": "Contact",
+    "follow": "Follow Us",
+    "rights": "All rights reserved",
+    "home": "Home",
+    "courses": "Courses",
+    "gallery": "Gallery",
+    "facilities": "Facilities"
+  },
+  "common": {
+    "explore": "Explore",
+    "learn": "Learn More",
+    "enroll": "Enroll Now",
+    "apply": "Apply Now",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "close": "Close",
+    "search": "Search",
+    "language": "Language",
+    "comingSoon": "Coming Soon",
+    "backToHome": "Back to Home"
+  },
+  "aboutPage": {
+    "title": "About Our School",
+    "description": "Our school is a place where learning goes beyond textbooks. We are committed to providing quality education that helps students grow academically, socially, and morally. With experienced teachers and modern facilities, we focus on shaping confident and responsible individuals.",
+    "whoWeAre": {
+      "title": "Who We Are",
+      "description": "Our school was founded more than 25 years ago with the aim of providing quality education in a disciplined and supportive environment. Over the years, it has grown with the trust of parents and the dedication of our teachers, creating a place where students feel safe, valued, and encouraged to learn.\n\nWe believe that true education goes beyond academics. By blending strong moral values with modern teaching practices, we focus on the overall development of each child, helping them grow academically, socially, and emotionally at their own pace."
+    },
+    "mission": {
+      "title": "Our Mission",
+      "description": "Our mission is to provide quality education in a safe and encouraging environment where students develop strong academic skills, good values, and confidence to succeed in life."
+    },
+    "vision": {
+      "title": "Our Vision",
+      "description": "Our vision is to create a learning community that inspires students to become responsible, skilled, and compassionate individuals who are prepared for future challenges."
+    },
+    "whyChoose": {
+      "title": "Why Choose Our School",
+      "subtitle": "We are committed to providing quality education in a supportive and inspiring environment.",
+      "features": {
+        "faculty": {
+          "title": "Experienced Faculty",
+          "description": "Our teachers are highly qualified and experienced, focusing on strong academic foundations and personal growth."
+        },
+        "safety": {
+          "title": "Safe & Friendly Environment",
+          "description": "We provide a secure, disciplined, and welcoming environment where students feel safe and confident."
+        },
+        "classroom": {
+          "title": "Modern Classrooms",
+          "description": "Smart classrooms with modern teaching tools make learning interactive and engaging for students."
+        },
+        "balance": {
+          "title": "Academic & Extracurricular Balance",
+          "description": "We ensure equal importance to academics, sports, arts, and extracurricular activities."
+        },
+        "studentCentered": {
+          "title": "Student-Centered Learning",
+          "description": "Our teaching approach focuses on individual student needs and encourages active participation."
+        },
+        "parentTeacher": {
+          "title": "Strong Parent–Teacher Partnership",
+          "description": "We maintain regular communication between parents and teachers to support student progress and overall development."
+        }
+      }
+    }
+  },
+  "facilitiesPage": {
+    "title": "Our Facilities",
+    "subtitle": "World-class infrastructure designed to nurture holistic development and provide an exceptional learning environment.",
+    "keyFeatures": "Key Features",
+    "scheduleTour": "Schedule a Tour",
+    "stats": {
+      "facilities": "Facilities",
+      "students": "Students",
+      "staff": "Staff",
+      "acres": "Acres Campus"
+    },
+    "scienceLabs": {
+      "title": "Advanced Science Labs",
+      "description": "State-of-the-art laboratories equipped with modern scientific equipment for hands-on experiments in Physics, Chemistry, and Biology.",
+      "features": {
+        "modern": "Modern equipment",
+        "safety": "Safety standards",
+        "expert": "Expert technicians",
+        "group": "Group experiments"
+      }
+    },
+    "computerLabs": {
+      "title": "Computer Labs",
+      "description": "Fully equipped computer labs with latest technology and high-speed internet connectivity for digital learning.",
+      "features": {
+        "hardware": "Latest hardware",
+        "internet": "High-speed internet",
+        "software": "Coding software",
+        "cloud": "Cloud access"
+      }
+    },
+    "smartClassrooms": {
+      "title": "Smart Classrooms",
+      "description": "Interactive classrooms with digital boards, projectors, and modern teaching aids for engaging learning experiences.",
+      "features": {
+        "boards": "Digital boards",
+        "projectors": "Projectors",
+        "video": "Video conferencing",
+        "interactive": "Interactive tools"
+      }
+    },
+    "library": {
+      "title": "Library & Resource Center",
+      "description": "Comprehensive library with thousands of books, digital resources, and a quiet study environment.",
+      "features": {
+        "collection": "Extensive collection",
+        "ebooks": "E-books",
+        "study": "Study areas",
+        "reference": "Reference desk"
+      }
+    },
+    "sports": {
+      "title": "Sports Facilities",
+      "description": "Complete sports infrastructure including fields, courts, gymnasium, and swimming pool for physical development.",
+      "features": {
+        "indoor": "Indoor courts",
+        "outdoor": "Outdoor fields",
+        "gym": "Gymnasium",
+        "pool": "Swimming pool"
+      }
+    },
+    "artMusic": {
+      "title": "Art & Music Studio",
+      "description": "Creative spaces equipped with instruments, art supplies, and expert instructors for artistic expression.",
+      "features": {
+        "instruments": "Musical instruments",
+        "supplies": "Art supplies",
+        "sound": "Sound system",
+        "gallery": "Gallery space"
+      }
+    },
+    "cafeteria": {
+      "title": "Cafeteria",
+      "description": "Hygienic and well-maintained cafeteria serving nutritious meals prepared with fresh ingredients.",
+      "features": {
+        "hygienic": "Hygienic kitchen",
+        "diverse": "Diverse menu",
+        "nutritious": "Nutritious meals",
+        "dietary": "Dietary options"
+      }
+    },
+    "medical": {
+      "title": "Medical Center",
+      "description": "On-campus medical facility with qualified nurses and doctors for student health and emergency services.",
+      "features": {
+        "firstAid": "First aid",
+        "checkups": "Health checkups",
+        "doctor": "Doctor on duty",
+        "medicine": "Medicine supply"
+      }
+    }
+  },
+  "events": {
+    "title": "Our Events",
+    "subtitle": "School Events",
+    "description": "Stay updated with all the exciting events and activities happening at our school"
+  }
+}

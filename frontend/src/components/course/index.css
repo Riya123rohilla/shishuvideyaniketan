@@ -1,0 +1,336 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@400;700&display=swap');
+
+@import "tailwindcss";
+
+/* ===== Design Tokens ===== */
+:root {
+  /* Primary - Navy/Indigo (Classic Trust) */
+  --c-primary-900: #0B2B4A;
+  --c-primary: #164A7A;
+  --c-primary-300: #4A87B8;
+
+  /* Accent - Gold (Classic Warmth) */
+  --c-accent: #C88F2A;
+  --c-accent-200: #E6C88F;
+
+  /* Secondary - Teal (Modern Freshness) */
+  --c-secondary: #2E8F88;
+  --c-secondary-200: #7FC7C2;
+
+  /* Neutrals */
+  --c-bg: #F7F5F2;
+  --c-surface: #FFFFFF;
+  --c-text: #24303A;
+  --c-muted: #66707A;
+  --c-border: #E6E9EB;
+
+  /* Semantic */
+  --c-success: #2F9E44;
+  --c-error: #D64545;
+  --c-warning: #F59E0B;
+
+  /* Shadows */
+  --shadow-1: 0 6px 18px rgba(10, 24, 40, 0.06);
+  --shadow-2: 0 12px 30px rgba(10, 24, 40, 0.08);
+  --shadow-3: 0 20px 40px rgba(10, 24, 40, 0.12);
+
+  /* Typography */
+  --font-serif: 'Merriweather', Georgia, serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+
+  /* Spacing Scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+}
+
+/* ===== Base Styles ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--c-text);
+  background-color: var(--c-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== Typography ===== */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #1e3a5f; /* blue-900 equivalent */
+}
+
+p {
+  color: #374151; /* gray-700 equivalent */
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 36px;
+  line-height: 44px;
+}
+
+h2 {
+  font-size: 28px;
+  line-height: 36px;
+}
+
+h3 {
+  font-size: 20px;
+  line-height: 28px;
+}
+
+p {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.text-caption {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+/* ===== Container ===== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ===== Links ===== */
+a {
+  color: var(--c-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--c-primary-300);
+}
+
+/* ===== Button Base ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  height: 44px;
+  padding: 0 20px;
+  border-radius: var(--radius-md);
+  background: var(--c-primary);
+  color: #FFFFFF;
+}
+
+.btn-primary:hover {
+  background: var(--c-primary-300);
+  box-shadow: 0 8px 24px rgba(22, 74, 122, 0.15);
+  transform: translateY(-1px);
+}
+
+.btn-accent {
+  height: 44px;
+  padding: 0 20px;
+  border-radius: var(--radius-md);
+  background: var(--c-accent);
+  color: #FFFFFF;
+}
+
+.btn-accent:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 6px 14px rgba(200, 143, 42, 0.2);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: 2px solid var(--c-primary);
+  color: var(--c-primary);
+}
+
+.btn-secondary:hover {
+  background: var(--c-primary);
+  color: #FFFFFF;
+}
+
+.btn-sm {
+  height: 36px;
+  padding: 0 14px;
+  font-size: 14px;
+}
+
+/* ===== Card Base ===== */
+.card {
+  background: var(--c-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--c-border);
+  box-shadow: var(--shadow-1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-2);
+  transform: translateY(-4px);
+}
+
+/* ===== Badge ===== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-primary {
+  background: rgba(22, 74, 122, 0.1);
+  color: var(--c-primary);
+}
+
+.badge-accent {
+  background: rgba(200, 143, 42, 0.15);
+  color: var(--c-accent);
+}
+
+.badge-secondary {
+  background: rgba(46, 143, 136, 0.1);
+  color: var(--c-secondary);
+}
+
+/* ===== Chip ===== */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 18px;
+  font-size: 14px;
+  font-weight: 500;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  color: var(--c-text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chip:hover {
+  border-color: var(--c-primary-300);
+  color: var(--c-primary);
+}
+
+.chip.active {
+  background: var(--c-primary);
+  border-color: var(--c-primary);
+  color: #FFFFFF;
+}
+
+/* ===== Input ===== */
+.input {
+  height: 48px;
+  padding: 0 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--c-border);
+  background: var(--c-surface);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  color: var(--c-text);
+  transition: all 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--c-primary);
+  box-shadow: 0 0 0 4px rgba(74, 135, 184, 0.12);
+}
+
+.input::placeholder {
+  color: var(--c-muted);
+}
+
+.input-lg {
+  height: 56px;
+  border-radius: var(--radius-lg);
+}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--c-border);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--c-muted);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--c-primary);
+}
+
+/* ===== Accessibility ===== */
+:focus-visible {
+  outline: 2px solid var(--c-primary);
+  outline-offset: 2px;
+}
+
+/* ===== Animation Kill Switch ===== */
+*, *::before, *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* ===== Responsive Utilities ===== */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 28px;
+    line-height: 36px;
+  }
+  
+  h2 {
+    font-size: 24px;
+    line-height: 32px;
+  }
+  
+  .container {
+    padding: 0 16px;
+  }
+}

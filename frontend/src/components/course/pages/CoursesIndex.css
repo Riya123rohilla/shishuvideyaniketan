@@ -1,0 +1,385 @@
+/* ============================================
+   COURSES INDEX PAGE - Simplified with Class Filter
+   ============================================ */
+
+.courses-page {
+    min-height: 100vh;
+}
+
+/* Main Content Area */
+.courses-main {
+    padding: 0 0 60px;
+    background: var(--c-bg);
+}
+
+.courses-container-full {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* ============================================
+   CLASS FILTER SECTION
+   ============================================ */
+
+.class-filter-section {
+    padding: 40px 0 30px;
+}
+
+.class-filter-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.filter-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-serif);
+    font-size: 28px;
+    font-weight: 700;
+    color: #1e3a5f; /* blue-900 */
+    margin-bottom: 8px;
+}
+
+.title-icon {
+    font-size: 32px;
+}
+
+.filter-subtitle {
+    font-size: 15px;
+    color: #374151; /* gray-700 */
+    font-weight: 700;
+}
+
+/* Filter Strip Wrapper */
+.class-filter-wrapper {
+    background: var(--c-surface);
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: 0 4px 24px rgba(22, 74, 122, 0.08);
+    overflow: hidden;
+}
+
+.class-filter-strip {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 8px 4px;
+    position: relative;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbar */
+.class-filter-strip::-webkit-scrollbar {
+    height: 0;
+    display: none;
+}
+
+/* Filter Indicator */
+.filter-indicator {
+    position: absolute;
+    bottom: 4px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--c-primary), var(--c-accent));
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    z-index: 0;
+}
+
+/* Class Button */
+.class-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 18px;
+    background: #ffffff;
+    border: 2px solid #e5e7eb;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    min-width: 85px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.class-btn:hover {
+    background: #f0f4f8;
+    border-color: #1e3a5f;
+    box-shadow: 0 4px 12px rgba(30, 58, 95, 0.15);
+}
+
+.class-btn.active {
+    background: #1e3a5f;
+    border-color: #1e3a5f;
+    box-shadow: 0 6px 20px rgba(30, 58, 95, 0.3);
+}
+
+.class-icon {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e3a5f;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e0e7ef;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.class-btn.active .class-icon {
+    background: rgba(255, 255, 255, 0.2);
+    color: #FFFFFF;
+}
+
+.class-btn:hover .class-icon {
+    transform: scale(1.1);
+}
+
+.class-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1e3a5f;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+}
+
+.class-btn.active .class-label {
+    color: #FFFFFF;
+}
+
+.active-dot {
+    position: absolute;
+    bottom: -8px;
+    width: 6px;
+    height: 6px;
+    background: var(--c-accent);
+    border-radius: 50%;
+}
+
+/* ============================================
+   RESULTS HEADER
+   ============================================ */
+
+.results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding: 16px 20px;
+    background: var(--c-surface);
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(22, 74, 122, 0.05);
+}
+
+.results-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.results-count {
+    font-size: 15px;
+    color: var(--c-muted);
+}
+
+.results-count strong {
+    color: var(--c-primary);
+    font-weight: 700;
+}
+
+.clear-filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.clear-filter-btn:hover {
+    background: rgba(239, 68, 68, 0.2);
+    transform: scale(1.02);
+}
+
+/* ============================================
+   COURSES GRID - FULL WIDTH
+   ============================================ */
+
+.courses-grid-full {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+}
+
+/* ============================================
+   EMPTY STATE
+   ============================================ */
+
+.empty-state {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    text-align: center;
+    background: var(--c-surface);
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(22, 74, 122, 0.06);
+}
+
+.empty-icon {
+    margin-bottom: 24px;
+    opacity: 0.6;
+}
+
+.empty-state h3 {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--c-primary-900);
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    font-size: 15px;
+    color: var(--c-muted);
+    margin-bottom: 24px;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 1200px) {
+    .courses-grid-full {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
+}
+
+@media (max-width: 900px) {
+    .courses-grid-full {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .filter-title {
+        font-size: 24px;
+    }
+
+    .class-btn {
+        padding: 12px 14px;
+        min-width: 75px;
+    }
+
+    .class-icon {
+        font-size: 24px;
+    }
+
+    .class-label {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 640px) {
+    .courses-container-full {
+        padding: 0 16px;
+    }
+
+    .class-filter-section {
+        padding: 24px 0 20px;
+    }
+
+    .filter-title {
+        font-size: 20px;
+    }
+
+    .title-icon {
+        font-size: 24px;
+    }
+
+    .filter-subtitle {
+        font-size: 13px;
+    }
+
+    .class-filter-wrapper {
+        padding: 12px;
+        border-radius: 16px;
+    }
+
+    .class-btn {
+        padding: 10px 12px;
+        min-width: 68px;
+        border-radius: 12px;
+    }
+
+    .class-icon {
+        font-size: 22px;
+    }
+
+    .class-label {
+        font-size: 10px;
+    }
+
+    .courses-grid-full {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .results-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 14px 16px;
+    }
+
+    .results-info {
+        justify-content: center;
+    }
+
+    .clear-filter-btn {
+        justify-content: center;
+    }
+}
+
+/* ============================================
+   SCROLL HINT ANIMATION
+   ============================================ */
+
+.class-filter-strip::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 60px;
+    background: linear-gradient(90deg, transparent, var(--c-surface));
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.class-filter-wrapper:hover .class-filter-strip::after {
+    opacity: 1;
+}
+
+@media (min-width: 1200px) {
+    .class-filter-strip::after {
+        display: none;
+    }
+}

@@ -1,0 +1,233 @@
+.filter-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: none;
+}
+
+@media (max-width: 992px) {
+    .filter-drawer {
+        display: block;
+    }
+}
+
+.drawer-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(11, 43, 74, 0.5);
+    opacity: 1;
+}
+
+.drawer-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-height: 85vh;
+    background: var(--c-surface);
+    border-radius: 24px 24px 0 0;
+    display: flex;
+    flex-direction: column;
+    /* visible without animated translation */
+}
+
+/* Header */
+.drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--c-border);
+}
+
+.drawer-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--c-primary-900);
+}
+
+.drawer-title svg {
+    color: var(--c-primary);
+}
+
+.drawer-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 8px;
+    background: var(--c-primary);
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 11px;
+}
+
+.drawer-close {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--c-bg);
+    border: none;
+    border-radius: 12px;
+    color: var(--c-muted);
+    cursor: pointer;
+    transition: none;
+}
+
+.drawer-close:hover {
+    background: var(--c-border);
+    color: var(--c-text);
+}
+
+/* Body */
+.drawer-body {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+}
+
+.drawer-section {
+    margin-bottom: 28px;
+}
+
+.drawer-section:last-child {
+    margin-bottom: 0;
+}
+
+.section-title {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--c-muted);
+    margin-bottom: 14px;
+}
+
+.section-options {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.section-options-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Drawer Checkbox */
+.drawer-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--c-bg);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: none;
+    min-height: 48px;
+}
+
+.drawer-checkbox:hover {
+    background: var(--c-border);
+}
+
+.drawer-checkbox input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.drawer-checkbox .checkbox-custom {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--c-border);
+    border-radius: 6px;
+    background: var(--c-surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: none;
+    flex-shrink: 0;
+}
+
+.drawer-checkbox input:checked+.checkbox-custom {
+    background: var(--c-primary);
+    border-color: var(--c-primary);
+}
+
+.drawer-checkbox input:checked+.checkbox-custom::after {
+    content: '';
+    width: 6px;
+    height: 10px;
+    border: solid #FFFFFF;
+    border-width: 0 2.5px 2.5px 0;
+    transform: rotate(45deg);
+    margin-top: -2px;
+}
+
+.drawer-checkbox .checkbox-label {
+    font-size: 15px;
+    color: var(--c-text);
+}
+
+/* Drawer Chip */
+.drawer-chip {
+    display: inline-flex;
+    cursor: pointer;
+}
+
+.drawer-chip input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.drawer-chip .chip-label {
+    display: inline-flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 18px;
+    background: var(--c-bg);
+    border: 2px solid transparent;
+    border-radius: 22px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-text);
+    transition: none;
+}
+
+.drawer-chip input:checked+.chip-label {
+    background: rgba(22, 74, 122, 0.1);
+    border-color: var(--c-primary);
+    color: var(--c-primary);
+}
+
+/* Footer */
+.drawer-footer {
+    display: flex;
+    gap: 12px;
+    padding: 16px 24px;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--c-border);
+    background: var(--c-surface);
+}
+
+.drawer-footer .btn {
+    flex: 1;
+    justify-content: center;
+    height: 50px;
+    font-size: 15px;
+}
+
+.drawer-footer .btn-secondary {
+    flex: 0.7;
+}
