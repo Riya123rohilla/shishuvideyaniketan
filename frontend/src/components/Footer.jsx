@@ -79,10 +79,8 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2024 {t('navbar.schoolName')}. {t('footer.rights')}</p>
-          <p className="mt-2 text-sm">{t('footer.rights')} ❤️ for quality education</p>
-          <p className="mt-3 text-sm text-gray-500">
-            Created by <span className="text-blue-400">Lokesh</span>, <span className="text-blue-400">Uttam</span>, <span className="text-blue-400">Riya</span>, <span className="text-blue-400">Tanya</span>
+          <p className="text-sm">
+            &copy; 2024 {t('navbar.schoolName')}. {t('footer.rights')} <span className="inline-block w-12"></span> Created by <a href="https://lokesh-three-lyart.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 transition-colors">Lokesh</a>, <a href="https://uttam-porfolio.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 transition-colors">Uttam</a>, <span className="text-blue-400">Riya</span>, <span className="text-blue-400">Tanya</span>, <span className="text-blue-400">Prachi</span>
           </p>
         </div>
       </div>
