@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
+import logo from '../assets/logo.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,9 +50,11 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/">
-              <h1 className="text-2xl md:text-3xl font-bold text-blue-900 cursor-pointer hover:text-blue-700 transition">
-                {t('navbar.schoolName')}
-              </h1>
+              <img 
+                src={logo} 
+                alt={t('navbar.schoolName')} 
+                className="h-14 md:h-16 w-auto cursor-pointer hover:opacity-90 transition rounded-full"
+              />
             </Link>
           </div>
 

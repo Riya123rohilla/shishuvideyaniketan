@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import logo from '../assets/logo.png';
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -10,7 +11,10 @@ const Footer = () => {
         <div className="grid md:grid-cols-4 gap-8">
           {/* About Section */}
           <div className="md:col-span-2">
-            <h3 className="text-2xl font-bold mb-4 text-blue-400">{t('navbar.schoolName')}</h3>
+            <div className="flex items-center gap-3 mb-4">
+              <img src={logo} alt={t('navbar.schoolName')} className="h-16 w-16 rounded-full" />
+              <h3 className="text-2xl font-bold text-blue-400">{t('navbar.schoolName')}</h3>
+            </div>
             <p className="text-gray-300 mb-4">
               {t('about.description')}
             </p>

@@ -2,7 +2,7 @@ import React from 'react';
 import Hero from '../components/Hero';
 import About from '../components/About';
 import LearningApproach from '../components/LearningApproach';
-import LearningSupportFeatures from '../components/LearningSupportFeatures';
+import ManagingBody from '../components/ManagingBody';
 import WhyLearningApproach from '../components/WhyLearningApproach';
 import HowItWorks from '../components/HowItWorks';
 import WhyChooseUs from '../components/WhyChooseUs';
@@ -23,8 +23,8 @@ const HomePage = () => {
       {/* 📘 Modern Learning Approach */}
       <LearningApproach />
       
-      {/* 📝 Learning Support Features - 3 Cards */}
-      <LearningSupportFeatures />
+      {/* 👥 Managing Body - Principal & Staff */}
+      <ManagingBody />
       
       {/* 🎯 Why This Learning Approach - Numbered List */}
       <WhyLearningApproach />
