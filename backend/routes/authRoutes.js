@@ -3,10 +3,10 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const { db } = require('../config/firebase');
 
-// Hardcoded credentials as fallback (from .env)
-const DEFAULT_USERNAME = process.env.ADMIN_USERNAME || 'admin';
-const DEFAULT_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
+// Required environment configuration
+const DEFAULT_USERNAME = process.env.ADMIN_USERNAME;
+const DEFAULT_PASSWORD = process.env.ADMIN_PASSWORD;
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // @route   POST /api/auth/login
 // @desc    Admin login
@@ -14,6 +14,13 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
+
+    if (!DEFAULT_USERNAME || !DEFAULT_PASSWORD || !JWT_SECRET) {
+      return res.status(500).json({
+        success: false,
+        message: 'Server auth configuration is missing'
+      });
+    }
 
     console.log(`[AUTH] Login attempt: ${username}`);
 
@@ -28,8 +35,7 @@ router.post('/login', async (req, res) => {
         console.log(`[AUTH] Admin found in Firestore, validating credentials...`);
         isValid = adminData.username === username && adminData.password === password;
       } else {
-        console.log(`[AUTH] Admin not found in Firestore, checking hardcoded credentials...`);
-        // Fall back to hardcoded credentials
+        console.log(`[AUTH] Admin not found in Firestore, checking env credentials...`);
         isValid = username === DEFAULT_USERNAME && password === DEFAULT_PASSWORD;
         
         // If credentials match, save to Firestore for future use
@@ -49,8 +55,7 @@ router.post('/login', async (req, res) => {
         }
       }
     } catch (firestoreError) {
-      console.warn(`[AUTH] Firestore error, using fallback credentials:`, firestoreError.message);
-      // Use hardcoded credentials as fallback
+      console.warn(`[AUTH] Firestore error, using env credentials:`, firestoreError.message);
       isValid = username === DEFAULT_USERNAME && password === DEFAULT_PASSWORD;
     }
 

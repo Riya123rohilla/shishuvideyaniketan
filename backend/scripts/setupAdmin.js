@@ -6,8 +6,27 @@ const dotenv = require('dotenv');
 // Load environment variables
 dotenv.config();
 
-const username = process.env.ADMIN_USERNAME || 'admin';
-const password = process.env.ADMIN_PASSWORD || 'admin123';
+const username = process.env.ADMIN_USERNAME;
+const password = process.env.ADMIN_PASSWORD;
+const databaseUrl = process.env.FIREBASE_DATABASE_URL;
+
+if (!username || !password) {
+  console.error('❌ ADMIN_USERNAME or ADMIN_PASSWORD is missing in environment.');
+  process.exit(1);
+}
+
+if (!databaseUrl) {
+  console.error('❌ FIREBASE_DATABASE_URL is missing in environment.');
+  process.exit(1);
+}
+
+let databaseHost;
+try {
+  databaseHost = new URL(databaseUrl).hostname;
+} catch (error) {
+  console.error('❌ FIREBASE_DATABASE_URL is invalid.');
+  process.exit(1);
+}
 
 async function initializeAdmin() {
   try {
@@ -23,7 +42,7 @@ async function initializeAdmin() {
     });
 
     const options = {
-      hostname: 'redesign-bbbbf-default-rtdb.firebaseio.com',
+      hostname: databaseHost,
       path: '/admins/admin.json',
       method: 'PUT',
       headers: {

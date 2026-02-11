@@ -63,13 +63,9 @@ npm install
 ```
 
 3. Configure environment variables:
-Create a `.env` file in the backend folder:
-```
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/shishu_vidya_nikethan
-JWT_SECRET=your_jwt_secret_key_change_this
-ADMIN_USERNAME=admin
-ADMIN_PASSWORD=admin123
+Copy the example file and fill in real values locally:
+```bash
+cp backend/.env.example backend/.env
 ```
 
 4. Start MongoDB server (if using local MongoDB)
@@ -108,10 +104,7 @@ The frontend will run on `http://localhost:3000`
 
 ## Default Admin Credentials
 
-- **Username:** admin
-- **Password:** admin123
-
-**⚠️ Change these credentials in production!**
+Set your own admin credentials in your local `.env` file.
 
 ## Usage
 

@@ -14,14 +14,29 @@ try {
 const authMiddleware = require('../middleware/authMiddleware');
 
 // Firestore REST API fallback
-const FIREBASE_PROJECT_ID = 'redesign-bbbbf';
-const FIRESTORE_API = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents`;
+const FIREBASE_PROJECT_ID = process.env.FIREBASE_PROJECT_ID;
+const FIREBASE_API_KEY = process.env.FIREBASE_API_KEY;
+const FIRESTORE_API = FIREBASE_PROJECT_ID
+  ? `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents`
+  : null;
+
+const ensureFirebaseConfig = (res) => {
+  if (!FIREBASE_PROJECT_ID || !FIREBASE_API_KEY) {
+    res.status(500).json({
+      success: false,
+      message: 'Firebase configuration is missing'
+    });
+    return false;
+  }
+  return true;
+};
 
 // @route   POST /api/enquiries
 // @desc    Submit new enquiry
 // @access  Public
 router.post('/', async (req, res) => {
   try {
+    if (!ensureFirebaseConfig(res)) return;
     const { name, email, phone, subject, message } = req.body;
 
     // Validate
@@ -55,7 +70,7 @@ router.post('/', async (req, res) => {
       { fields: firestoreDoc },
       {
         headers: { 'Content-Type': 'application/json' },
-        params: { key: 'AIzaSyBp4EGFLyzZPAzAM45DopE-1TCZfo_yihg' },
+        params: { key: FIREBASE_API_KEY },
         timeout: 10000
       }
     );
@@ -81,6 +96,7 @@ router.post('/', async (req, res) => {
 // @access  Private (with fallback to public)
 router.get('/', authMiddleware, async (req, res) => {
   try {
+    if (!ensureFirebaseConfig(res)) return;
     const { status } = req.query;
     
     // Use REST API to fetch documents
@@ -88,7 +104,7 @@ router.get('/', authMiddleware, async (req, res) => {
 
     const response = await axios.get(url, {
       headers: { 'Content-Type': 'application/json' },
-      params: { key: 'AIzaSyBp4EGFLyzZPAzAM45DopE-1TCZfo_yihg' },
+      params: { key: FIREBASE_API_KEY },
       timeout: 10000
     });
 
@@ -123,12 +139,13 @@ router.get('/', authMiddleware, async (req, res) => {
 // @access  Private
 router.get('/:id', authMiddleware, async (req, res) => {
   try {
+    if (!ensureFirebaseConfig(res)) return;
     const docId = req.params.id;
     const docUrl = `${FIRESTORE_API}/enquiries/${docId}`;
     
     const response = await axios.get(docUrl, {
       headers: { 'Content-Type': 'application/json' },
-      params: { key: 'AIzaSyBp4EGFLyzZPAzAM45DopE-1TCZfo_yihg' },
+      params: { key: FIREBASE_API_KEY },
       timeout: 10000
     });
 
@@ -158,6 +175,7 @@ router.get('/:id', authMiddleware, async (req, res) => {
 // @access  Private
 router.put('/:id', authMiddleware, async (req, res) => {
   try {
+    if (!ensureFirebaseConfig(res)) return;
     const { status, notes } = req.body;
     const docId = req.params.id;
     const updateData = {};
@@ -174,7 +192,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
     const docUrl = `${FIRESTORE_API}/enquiries/${docId}`;
     await axios.patch(docUrl, { fields: firestoreDoc }, {
       headers: { 'Content-Type': 'application/json' },
-      params: { key: 'AIzaSyBp4EGFLyzZPAzAM45DopE-1TCZfo_yihg' },
+      params: { key: FIREBASE_API_KEY },
       timeout: 10000
     });
 
@@ -190,12 +208,13 @@ router.put('/:id', authMiddleware, async (req, res) => {
 // @access  Private
 router.delete('/:id', authMiddleware, async (req, res) => {
   try {
+    if (!ensureFirebaseConfig(res)) return;
     const docId = req.params.id;
     const docUrl = `${FIRESTORE_API}/enquiries/${docId}`;
     
     await axios.delete(docUrl, {
       headers: { 'Content-Type': 'application/json' },
-      params: { key: 'AIzaSyBp4EGFLyzZPAzAM45DopE-1TCZfo_yihg' },
+      params: { key: FIREBASE_API_KEY },
       timeout: 10000
     });
 

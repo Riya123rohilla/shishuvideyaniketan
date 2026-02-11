@@ -16,15 +16,10 @@ npm install
 ```
 
 2. Configure environment variables:
-Create a `.env` file with:
+Copy the example file and fill in real values locally:
+```bash
+cp .env.example .env
 ```
-PORT=5000
-JWT_SECRET=your_jwt_secret_key
-ADMIN_USERNAME=admin
-ADMIN_PASSWORD=admin123
-```
-
-3. The Firebase configuration is already included in `config/firebase.js`
 
 4. Run the server:
 ```bash
@@ -52,10 +47,7 @@ npm run dev
 - `DELETE /api/enquiries/:id` - Delete enquiry (Admin)
 
 ## Default Admin Credentials
-- Username: admin
-- Password: admin123
-
-**Change these in production!**
+Set your own admin credentials in your local `.env` file.
 
 ## Firebase Collections
 

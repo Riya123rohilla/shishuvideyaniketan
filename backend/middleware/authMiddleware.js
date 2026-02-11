@@ -12,7 +12,13 @@ const authMiddleware = (req, res, next) => {
       });
     }
 
-    const jwtSecret = process.env.JWT_SECRET || 'your_jwt_secret_key';
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) {
+      return res.status(500).json({
+        success: false,
+        message: 'JWT secret is not configured'
+      });
+    }
     const decoded = jwt.verify(token, jwtSecret);
     req.admin = decoded;
     next();
