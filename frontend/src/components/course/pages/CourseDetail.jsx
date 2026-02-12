@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import CourseTabs from '../components/courses/CourseTabs';
 import EnrollModal from '../components/courses/EnrollModal';
 import CourseCard from '../components/courses/CourseCard';
-import { courses } from '../data/courses';
+import { courseAPI } from '../../../services/api';
 import './CourseDetail.css';
 
 const CourseDetail = () => {
@@ -12,7 +12,8 @@ const CourseDetail = () => {
     const { i18n } = useTranslation();
     const isHindi = i18n.language === 'hi';
     const [isEnrollModalOpen, setIsEnrollModalOpen] = useState(false);
-    const course = courses.find(c => c.id === courseId);
+    const [coursesData, setCoursesData] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const heroRef = useRef(null);
     const contentRef = useRef(null);
@@ -27,10 +28,46 @@ const CourseDetail = () => {
         window.scrollTo(0, 0);
     }, [courseId]);
 
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const res = await courseAPI.getAll();
+                if (res.data.success) {
+                    setCoursesData(res.data.data);
+                }
+            } catch (error) {
+                console.error('Error fetching courses:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchCourses();
+
+        // Re-fetch when tab becomes visible
+        const handleVisibility = () => {
+            if (document.visibilityState === 'visible') fetchCourses();
+        };
+        document.addEventListener('visibilitychange', handleVisibility);
+        return () => document.removeEventListener('visibilitychange', handleVisibility);
+    }, []);
+
+    const course = coursesData.find(c => c.id === courseId || c._id === courseId);
+
     // Get related courses (same category, excluding current)
-    const relatedCourses = courses
-        .filter(c => c.category === course?.category && c.id !== courseId)
+    const relatedCourses = coursesData
+        .filter(c => course && c.category === course.category && (c.id !== courseId && c._id !== courseId))
         .slice(0, 3);
+
+    if (loading) {
+        return (
+            <div style={{ textAlign: 'center', padding: '100px' }}>
+                <div className="spinner-border text-primary" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>
+                <h3>Loading Course Details...</h3>
+            </div>
+        );
+    }
 
     if (!course) {
         return (

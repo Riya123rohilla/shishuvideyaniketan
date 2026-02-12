@@ -1,42 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const axios = require('axios');
-let db, admin;
-
-try {
-  const firebase = require('../config/firebase');
-  db = firebase.db;
-  admin = firebase.admin;
-} catch (error) {
-  console.error('Firebase module load error:', error.message);
-}
-
+const SheetService = require('../services/SheetService');
 const authMiddleware = require('../middleware/authMiddleware');
 
-// Firestore REST API fallback
-const FIREBASE_PROJECT_ID = process.env.FIREBASE_PROJECT_ID;
-const FIREBASE_API_KEY = process.env.FIREBASE_API_KEY;
-const FIRESTORE_API = FIREBASE_PROJECT_ID
-  ? `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents`
-  : null;
-
-const ensureFirebaseConfig = (res) => {
-  if (!FIREBASE_PROJECT_ID || !FIREBASE_API_KEY) {
-    res.status(500).json({
-      success: false,
-      message: 'Firebase configuration is missing'
-    });
-    return false;
-  }
-  return true;
-};
+const SHEET_TITLE = 'Enquiries';
 
 // @route   POST /api/enquiries
 // @desc    Submit new enquiry
 // @access  Public
 router.post('/', async (req, res) => {
   try {
-    if (!ensureFirebaseConfig(res)) return;
     const { name, email, phone, subject, message } = req.body;
 
     // Validate
@@ -59,34 +32,19 @@ router.post('/', async (req, res) => {
       updatedAt: new Date().toISOString()
     };
 
-    // Save to Firestore REST API
-    const firestoreDoc = {};
-    Object.keys(enquiryData).forEach(key => {
-      firestoreDoc[key] = { stringValue: String(enquiryData[key]) };
-    });
+    const newEnquiry = await SheetService.add(SHEET_TITLE, enquiryData);
 
-    const response = await axios.post(
-      `${FIRESTORE_API}/enquiries`,
-      { fields: firestoreDoc },
-      {
-        headers: { 'Content-Type': 'application/json' },
-        params: { key: FIREBASE_API_KEY },
-        timeout: 10000
-      }
-    );
-
-    const docId = response.data.name.split('/').pop();
     res.status(201).json({
       success: true,
       message: 'Enquiry submitted successfully',
-      data: { _id: docId, ...enquiryData }
+      data: newEnquiry
     });
 
   } catch (error) {
     console.error('[POST /enquiries]', error.message);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Failed to submit enquiry' 
+    res.status(500).json({
+      success: false,
+      message: 'Failed to submit enquiry'
     });
   }
 });
@@ -96,40 +54,22 @@ router.post('/', async (req, res) => {
 // @access  Private (with fallback to public)
 router.get('/', authMiddleware, async (req, res) => {
   try {
-    if (!ensureFirebaseConfig(res)) return;
     const { status } = req.query;
-    
-    // Use REST API to fetch documents
-    let url = `${FIRESTORE_API}/enquiries?pageSize=100`;
+    const enquiries = await SheetService.getAll(SHEET_TITLE);
 
-    const response = await axios.get(url, {
-      headers: { 'Content-Type': 'application/json' },
-      params: { key: FIREBASE_API_KEY },
-      timeout: 10000
-    });
-
-    const enquiries = [];
-    if (response.data.documents) {
-      response.data.documents.forEach(doc => {
-        const fields = doc.fields || {};
-        enquiries.push({
-          _id: doc.name.split('/').pop(),
-          name: fields.name?.stringValue || '',
-          email: fields.email?.stringValue || '',
-          phone: fields.phone?.stringValue || '',
-          subject: fields.subject?.stringValue || '',
-          message: fields.message?.stringValue || '',
-          status: fields.status?.stringValue || 'new',
-          notes: fields.notes?.stringValue || '',
-          createdAt: fields.createdAt?.stringValue || new Date().toISOString(),
-          updatedAt: fields.updatedAt?.stringValue || new Date().toISOString()
-        });
-      });
+    // Optional filtering if needed, though status query param is not strictly used in original fully
+    // But we can filter
+    let data = enquiries;
+    if (status) {
+      data = enquiries.filter(e => e.status === status);
     }
 
-    res.json({ success: true, count: enquiries.length, data: enquiries });
+    // Sort by date desc
+    data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    res.json({ success: true, count: data.length, data: data });
   } catch (error) {
-    // Return empty array on error instead of failing
+    console.error('Error fetching enquiries:', error);
     res.json({ success: true, count: 0, data: [] });
   }
 });
@@ -139,34 +79,14 @@ router.get('/', authMiddleware, async (req, res) => {
 // @access  Private
 router.get('/:id', authMiddleware, async (req, res) => {
   try {
-    if (!ensureFirebaseConfig(res)) return;
-    const docId = req.params.id;
-    const docUrl = `${FIRESTORE_API}/enquiries/${docId}`;
-    
-    const response = await axios.get(docUrl, {
-      headers: { 'Content-Type': 'application/json' },
-      params: { key: FIREBASE_API_KEY },
-      timeout: 10000
-    });
-
-    const fields = response.data.fields || {};
-    const enquiry = {
-      _id: response.data.name.split('/').pop(),
-      name: fields.name?.stringValue || '',
-      email: fields.email?.stringValue || '',
-      phone: fields.phone?.stringValue || '',
-      subject: fields.subject?.stringValue || '',
-      message: fields.message?.stringValue || '',
-      status: fields.status?.stringValue || 'new',
-      notes: fields.notes?.stringValue || '',
-      createdAt: fields.createdAt?.stringValue || new Date().toISOString(),
-      updatedAt: fields.updatedAt?.stringValue || new Date().toISOString()
-    };
-
+    const enquiry = await SheetService.getById(SHEET_TITLE, req.params.id);
+    if (!enquiry) {
+      return res.status(404).json({ success: false, message: 'Enquiry not found' });
+    }
     res.json({ success: true, data: enquiry });
   } catch (error) {
     console.error('[GET /enquiries/:id]', error.message);
-    res.status(404).json({ success: false, message: 'Enquiry not found' });
+    res.status(500).json({ success: false, message: 'Server Error' });
   }
 });
 
@@ -175,7 +95,6 @@ router.get('/:id', authMiddleware, async (req, res) => {
 // @access  Private
 router.put('/:id', authMiddleware, async (req, res) => {
   try {
-    if (!ensureFirebaseConfig(res)) return;
     const { status, notes } = req.body;
     const docId = req.params.id;
     const updateData = {};
@@ -183,20 +102,13 @@ router.put('/:id', authMiddleware, async (req, res) => {
     if (notes) updateData.notes = notes;
     updateData.updatedAt = new Date().toISOString();
 
-    // Build Firestore format
-    const firestoreDoc = {};
-    Object.keys(updateData).forEach(key => {
-      firestoreDoc[key] = { stringValue: String(updateData[key]) };
-    });
+    const updatedEnquiry = await SheetService.update(SHEET_TITLE, docId, updateData);
 
-    const docUrl = `${FIRESTORE_API}/enquiries/${docId}`;
-    await axios.patch(docUrl, { fields: firestoreDoc }, {
-      headers: { 'Content-Type': 'application/json' },
-      params: { key: FIREBASE_API_KEY },
-      timeout: 10000
-    });
+    if (!updatedEnquiry) {
+      return res.status(404).json({ success: false, message: 'Enquiry not found' });
+    }
 
-    res.json({ success: true, message: 'Updated successfully' });
+    res.json({ success: true, message: 'Updated successfully', data: updatedEnquiry });
   } catch (error) {
     console.error('[PUT /enquiries/:id]', error.message);
     res.status(500).json({ success: false, message: 'Failed to update' });
@@ -208,15 +120,12 @@ router.put('/:id', authMiddleware, async (req, res) => {
 // @access  Private
 router.delete('/:id', authMiddleware, async (req, res) => {
   try {
-    if (!ensureFirebaseConfig(res)) return;
     const docId = req.params.id;
-    const docUrl = `${FIRESTORE_API}/enquiries/${docId}`;
-    
-    await axios.delete(docUrl, {
-      headers: { 'Content-Type': 'application/json' },
-      params: { key: FIREBASE_API_KEY },
-      timeout: 10000
-    });
+    const success = await SheetService.remove(SHEET_TITLE, docId);
+
+    if (!success) {
+      return res.status(404).json({ success: false, message: 'Enquiry not found' });
+    }
 
     res.json({ success: true, message: 'Deleted successfully' });
   } catch (error) {

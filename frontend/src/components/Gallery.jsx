@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { useTranslation } from 'react-i18next';
+import { galleryAPI } from '../services/api';
 
-const images = [
+const fallbackImages = [
     {
         id: 1,
         src: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1200&q=90',
@@ -63,6 +64,7 @@ const images = [
 
 const Gallery = () => {
     const { t } = useTranslation();
+    const [images, setImages] = useState(fallbackImages);
     const [activeIndex, setActiveIndex] = useState(0);
     const [showModal, setShowModal] = useState(false);
     const carouselRef = useRef(null);
@@ -77,6 +79,28 @@ const Gallery = () => {
     const currentX = useRef(0);
     const dragOffset = useRef(0);
     const dragThreshold = 50;
+
+    // Fetch gallery images from API
+    useEffect(() => {
+        const fetchGallery = async () => {
+            try {
+                const res = await galleryAPI.getAll();
+                if (res.data.success && res.data.data.length > 0) {
+                    setImages(res.data.data.map((img, i) => ({ ...img, id: img._id || i + 1 })));
+                }
+            } catch (error) {
+                console.error('Error fetching gallery, using fallback:', error);
+            }
+        };
+        fetchGallery();
+
+        // Re-fetch when tab becomes visible
+        const handleVisibility = () => {
+            if (document.visibilityState === 'visible') fetchGallery();
+        };
+        document.addEventListener('visibilitychange', handleVisibility);
+        return () => document.removeEventListener('visibilitychange', handleVisibility);
+    }, []);
 
     slidesRef.current = [];
     const addToRefs = (el) => {

@@ -44,4 +44,29 @@ export const authAPI = {
   changePassword: (data) => api.post('/auth/change-password', data),
 };
 
+// Gallery APIs
+export const galleryAPI = {
+  getAll: () => api.get('/gallery'),
+  create: (data) => api.post('/gallery', data),
+  update: (id, data) => api.put(`/gallery/${id}`, data),
+  delete: (id) => api.delete(`/gallery/${id}`),
+};
+
+// Staff APIs
+export const staffAPI = {
+  getAll: () => api.get('/staff'),
+  create: (data) => api.post('/staff', data),
+  update: (id, data) => api.put(`/staff/${id}`, data),
+  delete: (id) => api.delete(`/staff/${id}`),
+};
+
+// Course APIs
+export const courseAPI = {
+  getAll: () => api.get('/courses'),
+  getById: (id) => api.get(`/courses/${id}`),
+  create: (data) => api.post('/courses', data),
+  update: (id, data) => api.put(`/courses/${id}`, data),
+  delete: (id) => api.delete(`/courses/${id}`),
+};
+
 export default api;

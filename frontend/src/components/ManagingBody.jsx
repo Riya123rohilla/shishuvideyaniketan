@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { staffAPI } from '../services/api';
 
 const ManagingBody = () => {
   const [selectedMember, setSelectedMember] = useState(null);
@@ -10,8 +11,8 @@ const ManagingBody = () => {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
-  // Managing body members data with full details
-  const members = [
+  // Fallback managing body members data
+  const fallbackMembers = [
     {
       name: 'Rajdeep Dhanuka',
       position: 'Director',
@@ -88,6 +89,30 @@ const ManagingBody = () => {
       ]
     }
   ];
+
+  const [members, setMembers] = useState(fallbackMembers);
+
+  // Fetch staff from API
+  useEffect(() => {
+    const fetchStaff = async () => {
+      try {
+        const res = await staffAPI.getAll();
+        if (res.data.success && res.data.data.length > 0) {
+          setMembers(res.data.data);
+        }
+      } catch (error) {
+        console.error('Error fetching staff, using fallback:', error);
+      }
+    };
+    fetchStaff();
+
+    // Re-fetch when tab becomes visible
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') fetchStaff();
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => document.removeEventListener('visibilitychange', handleVisibility);
+  }, []);
 
   // Check scroll position to show/hide navigation arrows
   const checkScrollPosition = () => {

@@ -1,19 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const { db } = require('../config/firebase');
+const bcrypt = require('bcryptjs');
+const SheetService = require('../services/SheetService');
+const authMiddleware = require('../middleware/authMiddleware');
 
-// Required environment configuration
 const DEFAULT_USERNAME = process.env.ADMIN_USERNAME;
 const DEFAULT_PASSWORD = process.env.ADMIN_PASSWORD;
 const JWT_SECRET = process.env.JWT_SECRET;
+const ADMIN_SHEET_TITLE = 'Admins';
 
 // @route   POST /api/auth/login
 // @desc    Admin login
 // @access  Public
 router.post('/login', async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, email, password } = req.body;
+    const identifier = username || email;
 
     if (!DEFAULT_USERNAME || !DEFAULT_PASSWORD || !JWT_SECRET) {
       return res.status(500).json({
@@ -22,44 +25,58 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    console.log(`[AUTH] Login attempt: ${username}`);
+    console.log(`[AUTH] Login attempt: ${identifier}`);
 
-    // First, try to get admin from Firestore
     let isValid = false;
-    try {
-      const adminRef = db.collection('admins').doc('admin');
-      const adminDoc = await adminRef.get();
+    let adminUser = null;
 
-      if (adminDoc.exists) {
-        const adminData = adminDoc.data();
-        console.log(`[AUTH] Admin found in Firestore, validating credentials...`);
-        isValid = adminData.username === username && adminData.password === password;
-      } else {
-        console.log(`[AUTH] Admin not found in Firestore, checking env credentials...`);
-        isValid = username === DEFAULT_USERNAME && password === DEFAULT_PASSWORD;
-        
-        // If credentials match, save to Firestore for future use
-        if (isValid) {
-          try {
-            await adminRef.set({
-              username: DEFAULT_USERNAME,
-              password: DEFAULT_PASSWORD,
-              createdAt: new Date(),
-              updatedAt: new Date()
+    try {
+      const existingAdmin = await SheetService.getByUsername(identifier);
+
+      if (existingAdmin) {
+        // Check hashed password first, fallback to plain text for migration
+        if (existingAdmin.password.startsWith('$2a$') || existingAdmin.password.startsWith('$2b$')) {
+          isValid = await bcrypt.compare(password, existingAdmin.password);
+        } else {
+          // Plain text password (legacy) - migrate to hashed
+          isValid = existingAdmin.password === password;
+          if (isValid) {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            await SheetService.update(ADMIN_SHEET_TITLE, existingAdmin._id, {
+              password: hashedPassword,
+              updatedAt: new Date().toISOString()
             });
-            console.log(`[AUTH] Admin credentials saved to Firestore`);
-          } catch (firestoreError) {
-            console.warn(`[AUTH] Could not save to Firestore:`, firestoreError.message);
-            // Continue anyway - credentials still valid
+            console.log(`[AUTH] Migrated password to hashed for: ${identifier}`);
+          }
+        }
+        adminUser = existingAdmin;
+      } else {
+        // Fallback to env default credentials
+        if (identifier === DEFAULT_USERNAME && password === DEFAULT_PASSWORD) {
+          isValid = true;
+          try {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const isEmail = identifier.includes('@');
+            adminUser = await SheetService.add(ADMIN_SHEET_TITLE, {
+              username: isEmail ? 'admin' : identifier,
+              email: isEmail ? identifier : '',
+              password: hashedPassword,
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString()
+            });
+            console.log(`[AUTH] Admin credentials saved to Sheet (hashed)`);
+          } catch (sheetError) {
+            console.warn(`[AUTH] Could not save to Sheet:`, sheetError.message);
           }
         }
       }
-    } catch (firestoreError) {
-      console.warn(`[AUTH] Firestore error, using env credentials:`, firestoreError.message);
-      isValid = username === DEFAULT_USERNAME && password === DEFAULT_PASSWORD;
+    } catch (err) {
+      console.warn(`[AUTH] Sheet error, using env credentials:`, err.message);
+      if (identifier === DEFAULT_USERNAME && password === DEFAULT_PASSWORD) {
+        isValid = true;
+      }
     }
 
-    // Validate credentials
     if (!isValid) {
       return res.status(400).json({
         success: false,
@@ -67,22 +84,19 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    // Create JWT token
-    const token = jwt.sign(
-      { id: 'admin', username: username },
-      JWT_SECRET,
-      { expiresIn: '24h' }
-    );
+    const payload = {
+      id: adminUser ? adminUser._id : 'admin_default',
+      username: adminUser ? adminUser.username : identifier
+    };
 
-    console.log(`[AUTH] Login successful for: ${username}`);
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '24h' });
+
+    console.log(`[AUTH] Login successful for: ${identifier}`);
 
     res.json({
       success: true,
       token,
-      admin: {
-        id: 'admin',
-        username: username
-      }
+      admin: payload
     });
   } catch (error) {
     console.error('[AUTH] Login error:', error);
@@ -96,49 +110,47 @@ router.post('/login', async (req, res) => {
 // @route   POST /api/auth/change-password
 // @desc    Change admin password
 // @access  Private
-router.post('/change-password', async (req, res) => {
+router.post('/change-password', authMiddleware, async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
-    const adminRef = db.collection('admins').doc('admin');
-    
-    let adminDoc;
-    try {
-      adminDoc = await adminRef.get();
-    } catch (error) {
-      console.warn(`[AUTH] Could not fetch from Firestore:`, error.message);
-      return res.status(500).json({
+
+    if (!newPassword || newPassword.length < 6) {
+      return res.status(400).json({
         success: false,
-        message: 'Database error'
+        message: 'New password must be at least 6 characters'
       });
     }
 
-    if (!adminDoc.exists) {
+    const adminUser = await SheetService.getByUsername(req.admin.username || DEFAULT_USERNAME);
+
+    if (!adminUser) {
       return res.status(404).json({
         success: false,
-        message: 'Admin not found'
+        message: 'Admin not found in records'
       });
     }
 
-    const adminData = adminDoc.data();
-    if (adminData.password !== currentPassword) {
+    // Verify current password (hashed or plain text)
+    let currentPasswordValid = false;
+    if (adminUser.password.startsWith('$2a$') || adminUser.password.startsWith('$2b$')) {
+      currentPasswordValid = await bcrypt.compare(currentPassword, adminUser.password);
+    } else {
+      currentPasswordValid = adminUser.password === currentPassword;
+    }
+
+    if (!currentPasswordValid) {
       return res.status(400).json({
         success: false,
         message: 'Current password is incorrect'
       });
     }
 
-    try {
-      await adminRef.update({
-        password: newPassword,
-        updatedAt: new Date()
-      });
-    } catch (error) {
-      console.error('[AUTH] Error updating password:', error);
-      return res.status(500).json({
-        success: false,
-        message: 'Failed to update password'
-      });
-    }
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await SheetService.update(ADMIN_SHEET_TITLE, adminUser._id, {
+      password: hashedPassword,
+      updatedAt: new Date().toISOString()
+    });
 
     res.json({
       success: true,

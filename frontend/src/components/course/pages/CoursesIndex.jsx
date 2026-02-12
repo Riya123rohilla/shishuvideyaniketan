@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import CourseHero from '../components/courses/CourseHero';
 import CourseCard from '../components/courses/CourseCard';
-import { courses } from '../data/courses';
+import { courseAPI } from '../../../services/api';
 import './CoursesIndex.css';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -19,6 +19,37 @@ const CoursesIndex = () => {
     const indicatorRef = useRef(null);
     const gridRef = useRef(null);
     const cardRefs = useRef([]);
+
+    // State for courses
+    const [coursesData, setCoursesData] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    // Fetch courses from API
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const res = await courseAPI.getAll();
+                if (res.data.success) {
+                    setCoursesData(res.data.data);
+                } else {
+                    console.error('Failed to fetch courses:', res.data.message);
+                }
+            } catch (error) {
+                console.error('Error fetching courses:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCourses();
+
+        // Re-fetch when tab becomes visible
+        const handleVisibility = () => {
+            if (document.visibilityState === 'visible') fetchCourses();
+        };
+        document.addEventListener('visibilitychange', handleVisibility);
+        return () => document.removeEventListener('visibilitychange', handleVisibility);
+    }, []);
 
     // Class data with icons and colors
     const classFilters = [
@@ -60,11 +91,11 @@ const CoursesIndex = () => {
             indicatorRef.current.style.left = activeBtn.offsetLeft + 'px';
             indicatorRef.current.style.width = activeBtn.offsetWidth + 'px';
         }
-    }, [selectedClass]);
+    }, [selectedClass, loading]); // Added loading dependency to re-run after load
 
     // Filter courses
     const filteredCourses = useMemo(() => {
-        let result = [...courses];
+        let result = [...coursesData];
 
         // Search filter
         if (searchQuery) {
@@ -86,7 +117,7 @@ const CoursesIndex = () => {
         result.sort((a, b) => (b.popular ? 1 : 0) - (a.popular ? 1 : 0));
 
         return result;
-    }, [searchQuery, selectedClass]);
+    }, [searchQuery, selectedClass, coursesData]);
 
     // Update refs array when filteredCourses changes
     useEffect(() => {
@@ -218,12 +249,18 @@ const CoursesIndex = () => {
                         )}
                     </div>
 
-                    {/* Course Grid */}
-                    {filteredCourses.length > 0 ? (
+                    {loading ? (
+                        <div style={{ textAlign: 'center', padding: '50px' }}>
+                            <div className="spinner-border text-primary" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
+                            <h3>Loading Courses...</h3>
+                        </div>
+                    ) : filteredCourses.length > 0 ? (
                         <div className="courses-grid-full" ref={gridRef}>
                             {filteredCourses.map((course, index) => (
                                 <CourseCard
-                                    key={course.id}
+                                    key={course.id || course._id}
                                     course={course}
                                     index={index}
                                     ref={cardRefs.current[index]}

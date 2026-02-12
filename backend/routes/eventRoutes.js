@@ -1,84 +1,35 @@
 const express = require('express');
 const router = express.Router();
-const axios = require('axios');
-let db;
-
-try {
-  const firebase = require('../config/firebase');
-  db = firebase.db;
-} catch (error) {
-  console.error('Firebase module load error:', error.message);
-}
-
+const SheetService = require('../services/SheetService');
 const authMiddleware = require('../middleware/authMiddleware');
 
-// Firestore REST API
-const FIREBASE_PROJECT_ID = process.env.FIREBASE_PROJECT_ID;
-const FIREBASE_API_KEY = process.env.FIREBASE_API_KEY;
-const FIRESTORE_API = FIREBASE_PROJECT_ID
-  ? `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents`
-  : null;
-
-const ensureFirebaseConfig = (res) => {
-  if (!FIREBASE_PROJECT_ID || !FIREBASE_API_KEY) {
-    res.status(500).json({
-      success: false,
-      message: 'Firebase configuration is missing'
-    });
-    return false;
-  }
-  return true;
-};
+const SHEET_TITLE = 'Events';
 
 // @route   GET /api/events
 // @desc    Get all active events
 // @access  Public
 router.get('/', async (req, res) => {
   try {
-    if (!ensureFirebaseConfig(res)) return;
-    // Use REST API to fetch active events
-    const response = await axios.get(`${FIRESTORE_API}/events?pageSize=100`, {
-      headers: { 'Content-Type': 'application/json' },
-      params: { key: FIREBASE_API_KEY },
-      timeout: 10000
-    });
+    const events = await SheetService.getAll(SHEET_TITLE);
 
-    const events = [];
-    if (response.data.documents) {
-      response.data.documents.forEach(doc => {
-        const fields = doc.fields || {};
-        const isActive = fields.isActive?.booleanValue !== false;
-        
-        // Only include active events
-        if (isActive) {
-          events.push({
-            _id: doc.name.split('/').pop(),
-            title: fields.title?.stringValue || '',
-            description: fields.description?.stringValue || '',
-            startDate: fields.startDate?.stringValue || '',
-            endDate: fields.endDate?.stringValue || '',
-            image: fields.image?.stringValue || '',
-            priority: parseInt(fields.priority?.integerValue || '0'),
-            isActive: isActive,
-            createdAt: fields.createdAt?.stringValue || new Date().toISOString(),
-            updatedAt: fields.updatedAt?.stringValue || new Date().toISOString()
-          });
-        }
-      });
-    }
+    // Filter active events and sort
+    const activeEvents = events.filter(e => e.isActive === 'TRUE' || e.isActive === true || e.isActive === 'true');
 
     // Sort by priority (desc) then by start date (desc)
-    events.sort((a, b) => {
-      if (b.priority !== a.priority) return b.priority - a.priority;
+    activeEvents.sort((a, b) => {
+      const pA = parseInt(a.priority) || 0;
+      const pB = parseInt(b.priority) || 0;
+      if (pB !== pA) return pB - pA;
       return new Date(b.startDate) - new Date(a.startDate);
     });
 
     res.json({
       success: true,
-      count: events.length,
-      data: events
+      count: activeEvents.length,
+      data: activeEvents
     });
   } catch (error) {
+    console.error('Error fetching events:', error);
     res.json({ success: true, count: 0, data: [] });
   }
 });
@@ -88,36 +39,10 @@ router.get('/', async (req, res) => {
 // @access  Private
 router.get('/all', authMiddleware, async (req, res) => {
   try {
-    if (!ensureFirebaseConfig(res)) return;
-    // Use REST API to fetch documents
-    const response = await axios.get(`${FIRESTORE_API}/events?pageSize=100`, {
-      headers: { 'Content-Type': 'application/json' },
-      params: { key: FIREBASE_API_KEY },
-      timeout: 10000
-    });
-
-    const events = [];
-    if (response.data.documents) {
-      response.data.documents.forEach(doc => {
-        const fields = doc.fields || {};
-        events.push({
-          _id: doc.name.split('/').pop(),
-          title: fields.title?.stringValue || '',
-          description: fields.description?.stringValue || '',
-          startDate: fields.startDate?.stringValue || '',
-          endDate: fields.endDate?.stringValue || '',
-          image: fields.image?.stringValue || '',
-          priority: parseInt(fields.priority?.integerValue || '0'),
-          isActive: fields.isActive?.booleanValue !== false,
-          createdAt: fields.createdAt?.stringValue || new Date().toISOString(),
-          updatedAt: fields.updatedAt?.stringValue || new Date().toISOString()
-        });
-      });
-    }
-
+    const events = await SheetService.getAll(SHEET_TITLE);
     res.json({ success: true, count: events.length, data: events });
   } catch (error) {
-    // Return empty array on error instead of failing
+    console.error('Error fetching all events:', error);
     res.json({ success: true, count: 0, data: [] });
   }
 });
@@ -127,31 +52,13 @@ router.get('/all', authMiddleware, async (req, res) => {
 // @access  Public
 router.get('/:id', async (req, res) => {
   try {
-    if (!ensureFirebaseConfig(res)) return;
-    const docId = req.params.id;
-    const response = await axios.get(`${FIRESTORE_API}/events/${docId}`, {
-      headers: { 'Content-Type': 'application/json' },
-      params: { key: FIREBASE_API_KEY },
-      timeout: 10000
-    });
-
-    const fields = response.data.fields || {};
-    const event = {
-      _id: response.data.name.split('/').pop(),
-      title: fields.title?.stringValue || '',
-      description: fields.description?.stringValue || '',
-      startDate: fields.startDate?.stringValue || '',
-      endDate: fields.endDate?.stringValue || '',
-      image: fields.image?.stringValue || '',
-      priority: parseInt(fields.priority?.integerValue || '0'),
-      isActive: fields.isActive?.booleanValue !== false,
-      createdAt: fields.createdAt?.stringValue || new Date().toISOString(),
-      updatedAt: fields.updatedAt?.stringValue || new Date().toISOString()
-    };
-
+    const event = await SheetService.getById(SHEET_TITLE, req.params.id);
+    if (!event) {
+      return res.status(404).json({ success: false, message: 'Event not found' });
+    }
     res.json({ success: true, data: event });
   } catch (error) {
-    res.status(404).json({ success: false, message: 'Event not found' });
+    res.status(500).json({ success: false, message: 'Server Error' });
   }
 });
 
@@ -160,7 +67,6 @@ router.get('/:id', async (req, res) => {
 // @access  Private
 router.post('/', authMiddleware, async (req, res) => {
   try {
-    if (!ensureFirebaseConfig(res)) return;
     const { title, description, startDate, endDate, image, priority } = req.body;
 
     const eventData = {
@@ -169,45 +75,24 @@ router.post('/', authMiddleware, async (req, res) => {
       startDate: startDate || new Date().toISOString(),
       endDate: endDate || new Date().toISOString(),
       image: image || '',
-      isActive: true,
+      isActive: 'TRUE', // Store as string 'TRUE' for sheets compatibility if needed, but 'true' string is fine
       priority: priority || 0,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
 
-    // Convert to Firestore REST API format
-    const firestoreDoc = {
-      fields: {
-        title: { stringValue: eventData.title },
-        description: { stringValue: eventData.description },
-        startDate: { stringValue: eventData.startDate },
-        endDate: { stringValue: eventData.endDate },
-        image: { stringValue: eventData.image },
-        isActive: { booleanValue: eventData.isActive },
-        priority: { integerValue: String(eventData.priority) },
-        createdAt: { stringValue: eventData.createdAt },
-        updatedAt: { stringValue: eventData.updatedAt }
-      }
-    };
-
-    const response = await axios.post(`${FIRESTORE_API}/events`, firestoreDoc, {
-      headers: { 'Content-Type': 'application/json' },
-      params: { key: FIREBASE_API_KEY },
-      timeout: 10000
-    });
-
-    const docId = response.data.name.split('/').pop();
+    const newEvent = await SheetService.add(SHEET_TITLE, eventData);
 
     res.status(201).json({
       success: true,
       message: 'Event created successfully',
-      data: { _id: docId, ...eventData }
+      data: newEvent
     });
   } catch (error) {
     console.error('Event creation error:', error.message);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Failed to create event' 
+    res.status(500).json({
+      success: false,
+      message: 'Failed to create event'
     });
   }
 });
@@ -217,7 +102,6 @@ router.post('/', authMiddleware, async (req, res) => {
 // @access  Private
 router.put('/:id', authMiddleware, async (req, res) => {
   try {
-    if (!ensureFirebaseConfig(res)) return;
     const { title, description, startDate, endDate, image, isActive, priority } = req.body;
     const docId = req.params.id;
 
@@ -227,38 +111,26 @@ router.put('/:id', authMiddleware, async (req, res) => {
     if (startDate !== undefined) updateData.startDate = startDate;
     if (endDate !== undefined) updateData.endDate = endDate;
     if (image !== undefined) updateData.image = image;
-    if (isActive !== undefined) updateData.isActive = isActive;
+    if (isActive !== undefined) updateData.isActive = String(isActive).toUpperCase(); // 'TRUE' or 'FALSE'
     if (priority !== undefined) updateData.priority = priority;
     updateData.updatedAt = new Date().toISOString();
 
-    // Convert to Firestore format
-    const firestoreDoc = { fields: {} };
-    Object.keys(updateData).forEach(key => {
-      if (key === 'isActive') {
-        firestoreDoc.fields[key] = { booleanValue: updateData[key] };
-      } else if (key === 'priority') {
-        firestoreDoc.fields[key] = { integerValue: String(updateData[key]) };
-      } else {
-        firestoreDoc.fields[key] = { stringValue: String(updateData[key]) };
-      }
-    });
+    const updatedEvent = await SheetService.update(SHEET_TITLE, docId, updateData);
 
-    const docUrl = `${FIRESTORE_API}/events/${docId}`;
-    await axios.patch(docUrl, firestoreDoc, {
-      headers: { 'Content-Type': 'application/json' },
-      params: { key: FIREBASE_API_KEY },
-      timeout: 10000
-    });
+    if (!updatedEvent) {
+      return res.status(404).json({ success: false, message: 'Event not found' });
+    }
 
     res.json({
       success: true,
-      message: 'Event updated successfully'
+      message: 'Event updated successfully',
+      data: updatedEvent
     });
   } catch (error) {
     console.error('Event update error:', error.message);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Failed to update event' 
+    res.status(500).json({
+      success: false,
+      message: 'Failed to update event'
     });
   }
 });
@@ -268,15 +140,12 @@ router.put('/:id', authMiddleware, async (req, res) => {
 // @access  Private
 router.delete('/:id', authMiddleware, async (req, res) => {
   try {
-    if (!ensureFirebaseConfig(res)) return;
     const docId = req.params.id;
-    const docUrl = `${FIRESTORE_API}/events/${docId}`;
+    const success = await SheetService.remove(SHEET_TITLE, docId);
 
-    await axios.delete(docUrl, {
-      headers: { 'Content-Type': 'application/json' },
-      params: { key: FIREBASE_API_KEY },
-      timeout: 10000
-    });
+    if (!success) {
+      return res.status(404).json({ success: false, message: 'Event not found' });
+    }
 
     res.json({
       success: true,
@@ -284,9 +153,9 @@ router.delete('/:id', authMiddleware, async (req, res) => {
     });
   } catch (error) {
     console.error('Event deletion error:', error.message);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Failed to delete event' 
+    res.status(500).json({
+      success: false,
+      message: 'Failed to delete event'
     });
   }
 });
