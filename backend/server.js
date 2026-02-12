@@ -63,11 +63,21 @@ app.use((err, req, res, next) => {
 // Start server
 const PORT = process.env.PORT || 5000;
 
-// Render and local need app.listen, Vercel handles it via export
-if (!process.env.VERCEL) {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
+try {
+  // Render and local need app.listen, Vercel handles it via export
+  if (!process.env.VERCEL) {
+    app.listen(PORT, () => {
+      console.log(`🚀 Server fully initialized and listening on port ${PORT}`);
+    }).on('error', (err) => {
+      console.error('❌ Server failed to start:', err.message);
+      process.exit(1);
+    });
+  } else {
+    console.log('☁️ Running in Vercel environment (Serverless)');
+  }
+} catch (error) {
+  console.error('💥 Critical Startup Error:', error);
+  process.exit(1);
 }
 
 module.exports = app;
