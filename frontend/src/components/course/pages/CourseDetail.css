@@ -1,0 +1,496 @@
+.course-detail-page {
+    min-height: 100vh;
+    padding-bottom: 80px;
+}
+
+/* Not Found */
+.not-found {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.not-found-content {
+    text-align: center;
+}
+
+.not-found-content h1 {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.not-found-content p {
+    color: var(--c-muted);
+    margin-bottom: 24px;
+}
+
+/* Breadcrumb */
+.breadcrumb-section {
+    background: var(--c-surface);
+    border-bottom: 1px solid var(--c-border);
+    padding: 16px 0;
+}
+
+.breadcrumb-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+    font-size: 14px;
+}
+
+.breadcrumb li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.breadcrumb li:not(:last-child)::after {
+    content: '/';
+    color: var(--c-border);
+}
+
+.breadcrumb a {
+    color: var(--c-muted);
+    transition: color 0.2s ease;
+}
+
+.breadcrumb a:hover {
+    color: var(--c-primary);
+}
+
+.breadcrumb li:last-child {
+    color: var(--c-text);
+    font-weight: 500;
+}
+
+/* Detail Hero */
+.detail-hero {
+    position: relative;
+    height: 280px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+}
+
+.detail-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(11, 43, 74, 0.85) 100%);
+    z-index: 1;
+}
+
+.detail-hero-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.detail-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 32px 24px;
+    color: #FFFFFF;
+}
+
+.hero-badges {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.hero-badges .badge-category {
+    background: rgba(255, 255, 255, 0.2);
+    color: #FFFFFF;
+    backdrop-filter: blur(10px);
+}
+
+.hero-badges .badge-popular {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    background: var(--c-accent);
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 14px;
+}
+
+.course-code {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-accent-200);
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.detail-hero-content h1 {
+    font-size: 36px;
+    color: #FFFFFF;
+    margin-bottom: 12px;
+}
+
+.hero-summary {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 700px;
+}
+
+/* Main Content */
+.detail-main {
+    padding: 40px 0;
+}
+
+.detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    gap: 32px;
+}
+
+.detail-content {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Quick Info Bar */
+.quick-info-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding: 24px;
+    background: var(--c-surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--c-border);
+    margin-bottom: 32px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 140px;
+}
+
+.info-item svg {
+    color: var(--c-primary);
+    flex-shrink: 0;
+}
+
+.info-item div {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-label {
+    font-size: 12px;
+    color: #374151; /* gray-700 */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e3a5f; /* blue-900 */
+}
+
+.info-item.highlight .info-value {
+    color: var(--c-primary);
+}
+
+/* Sidebar */
+.detail-sidebar {
+    width: 360px;
+    flex-shrink: 0;
+}
+
+.sidebar-card {
+    position: sticky;
+    top: 96px;
+    background: var(--c-surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--c-border);
+    padding: 24px;
+    box-shadow: var(--shadow-2);
+}
+
+.sidebar-fee {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.sidebar-fee .fee-label {
+    display: block;
+    font-size: 13px;
+    color: var(--c-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.sidebar-fee .fee-amount {
+    font-family: var(--font-serif);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--c-primary-900);
+}
+
+.sidebar-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sidebar-actions .btn {
+    width: 100%;
+    justify-content: center;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 48px;
+}
+
+.sidebar-divider {
+    height: 1px;
+    background: var(--c-border);
+    margin: 24px 0;
+}
+
+.sidebar-contact h4 {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.sidebar-contact p {
+    font-size: 14px;
+    color: var(--c-muted);
+    margin-bottom: 16px;
+}
+
+.contact-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background: var(--c-bg);
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--c-text);
+    margin-bottom: 8px;
+    transition: all 0.2s ease;
+}
+
+.contact-link:last-of-type {
+    margin-bottom: 0;
+}
+
+.contact-link:hover {
+    background: var(--c-border);
+    color: var(--c-primary);
+}
+
+.contact-link svg {
+    color: var(--c-primary);
+}
+
+.download-btn {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 48px;
+    background: var(--c-bg);
+    border: 1px dashed var(--c-border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.download-btn:hover {
+    border-color: var(--c-primary);
+    color: var(--c-primary);
+    background: rgba(22, 74, 122, 0.05);
+}
+
+.download-btn svg {
+    color: var(--c-primary);
+}
+
+/* Related Courses */
+.related-courses {
+    padding: 48px 0;
+    background: var(--c-bg);
+}
+
+.related-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.section-header h2 {
+    font-size: 24px;
+}
+
+.view-all-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-primary);
+}
+
+.view-all-link:hover {
+    text-decoration: underline;
+}
+
+.related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+/* Mobile CTA Bar */
+.mobile-cta-bar {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--c-surface);
+    border-top: 1px solid var(--c-border);
+    padding: 12px 16px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-cta-bar .mobile-fee {
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-cta-bar .fee-label {
+    font-size: 11px;
+    color: var(--c-muted);
+    text-transform: uppercase;
+}
+
+.mobile-cta-bar .fee-amount {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--c-primary-900);
+}
+
+.mobile-cta-bar .btn {
+    flex: 1;
+    height: 48px;
+    justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+    .related-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .detail-container {
+        flex-direction: column;
+    }
+
+    .detail-sidebar {
+        width: 100%;
+        order: -1;
+    }
+
+    .sidebar-card {
+        position: static;
+    }
+
+    .course-detail-page {
+        padding-bottom: 100px;
+    }
+
+    .mobile-cta-bar {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .detail-hero {
+        height: 240px;
+    }
+
+    .detail-hero-content h1 {
+        font-size: 28px;
+    }
+
+    .breadcrumb-container,
+    .detail-container,
+    .related-container {
+        padding: 0 16px;
+    }
+
+    .quick-info-bar {
+        flex-direction: column;
+        gap: 16px;
+        padding: 20px;
+    }
+
+    .info-item {
+        min-width: 100%;
+    }
+
+    .related-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .detail-hero-content h1 {
+        font-size: 24px;
+    }
+
+    .hero-summary {
+        font-size: 14px;
+    }
+
+    .sidebar-fee .fee-amount {
+        font-size: 24px;
+    }
+}

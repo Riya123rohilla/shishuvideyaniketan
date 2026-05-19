@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Key Pages -->
+  <url>
+    <loc>https://shishuvidyaniketan.edu/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://shishuvidyaniketan.edu/courses</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shishuvidyaniketan.edu/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://shishuvidyaniketan.edu/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Program Categories -->
+  <url>
+    <loc>https://shishuvidyaniketan.edu/courses?category=pre-primary</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://shishuvidyaniketan.edu/courses?category=primary</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://shishuvidyaniketan.edu/courses?category=middle-school</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://shishuvidyaniketan.edu/courses?category=secondary</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://shishuvidyaniketan.edu/courses?category=senior-secondary</loc>
+    <priority>0.6</priority>
+  </url>
+</urlset>
